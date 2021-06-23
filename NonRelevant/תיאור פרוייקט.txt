@@ -1,0 +1,77 @@
+JB project definition:
+===============
+
+Task / Item:
+- Id
+-caption
+- listId
+- isCompleted
+
+TodoList Entity: 
+his attributes: 
+- Id
+- url
+- tasks / items
+- title (caption)
+- description
+- color
+- image/(or material design icons- bonus)
+
+Routes:
+=====
+/home: 
+name of app'
+developer's name
+todays date
+num' of todo items
+num' of uncomplitad todo items
+button that redirects to  lists/-1/edit
+
+/lists:
+all lists
+
+/lists/:id
+list description
+icon
+items in the list
+
+/lists/:id/edit
+(form)
+list title
+description
+color
+icon
+
+
+/items
+all the uncompleted todo items 
+
+/:
+ redirect to  /home
+
+other
+nice error message
+
+
+Angular:
+=======
+* Core (root) module to include all rest
+* Angular Router
+
+
+
+navigation toolbar component:
+=======
+Home
+Lists
+Items
+
+
+home page:
+=======
+app name,
+developer,
+
+
+
+
