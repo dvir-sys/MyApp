@@ -1,7 +1,7 @@
 JB project definition:
 ===============
 
-Task / Item:
+TaskItem:
 - Id
 -caption
 - listId
