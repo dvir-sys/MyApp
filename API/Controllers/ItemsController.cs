@@ -27,7 +27,7 @@ namespace API.Controllers
         // api/items
         public async Task<ActionResult<IEnumerable<ItemDto>>> GetAllActiveItems()
         {
-            List<TaskItem> items = await _context.TaskItems.Where(item => !(item.IsCompleted)).ToListAsync();
+            List<TaskItem> items = await _context.TaskItems.Where(item => (!(item.IsCompleted))).ToListAsync();
             List<ItemDto> itemDtos = new List<ItemDto>();
             items.ForEach(item => itemDtos.Add(new ItemDto { Caption = item.Caption }));
             return itemDtos;
