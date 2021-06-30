@@ -28,14 +28,14 @@ namespace API.Controllers
             return await _context.TodoLists.ToListAsync();
         }
 
-        [Route("/lists/:id")]
-        [HttpGet]
+        //[Route("/:id")]
+        [HttpGet("{id}")]
          public async Task<ActionResult<TodoList>> GetListById(int id){
             return await _context.TodoLists.FindAsync(id);
          }
 
-        [Route("/lists/:id")]
-        [HttpPut()]
+        //[Route("/lists/:id")]
+        [HttpPut("{id}")]
         //[HttpPost("updateList")]
         public async Task<ActionResult> EditListById(int id, TodoListDto listDto){
             if (id == -1){
