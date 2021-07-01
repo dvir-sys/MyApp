@@ -17,9 +17,9 @@ namespace API.Controllers
         private readonly IMapper _mapper;
         private readonly DataContext _context;
 
-        public TodoListController(DataContext context, IMapper mapper)
+        public TodoListController(DataContext context, IMapper mapper1)
         {
-            _mapper = mapper;
+            _mapper = mapper1;
             _context = context;
         }
 
@@ -34,51 +34,56 @@ namespace API.Controllers
             return await _context.TodoLists.FindAsync(id);
          }
 
-        //[Route("/lists/:id")]
-        [HttpPut("{id}")]
+        //[Route("/TodoList/:id")]
+        //[HttpPut("{id}")]
         //[HttpPost("updateList")]
-        public async Task<ActionResult> EditListById(int id, TodoListDto listDto){
+        [HttpPut]
+        public async Task<ActionResult<int>> EditListById(/*int id,*/ TodoListDto listDto){
+            int id = listDto.id;
+            Console.WriteLine("id!!!" + id);
             if (id == -1){
-                await CreateNewList(listDto);
+                return await CreateNewList(listDto);
             }else{
                 TodoList list = await _context.TodoLists.FindAsync(id);
                 
-                list.url = listDto.url;
-                list.title = listDto.title;
-                list.description = listDto.description;
-                list.color = listDto.color;
-                list.image = listDto.image;
+                list.url = listDto.url!=null ? listDto.url : "";
+                list.title = listDto.title!=null ? listDto.title : "";
+                list.description = listDto.description!=null ? listDto.description : "";
+                list.color = listDto.color!=null ? listDto.color : "";
+                list.image = listDto.image!=null ? listDto.image : "";
 
                 _context.TodoLists.Update(list);
                 await _context.SaveChangesAsync();
             }
-            return NoContent();
+            return Ok(id);
         }
 
-        private async Task<ActionResult<TodoListDto>> CreateNewList(TodoListDto listDto)
+        private async Task<ActionResult<int>> CreateNewList(TodoListDto listDto)
         {
             var list = new TodoList
             {
-                url = listDto.url,
+                //url = listDto.url,
                 tasks = new List<TaskItem>(),
-                title = listDto.title,
-                description = listDto.description,
-                color = listDto.color,
-                image = listDto.image
+                url = listDto.url!=null ? listDto.url : "",
+                title = listDto.title!=null ? listDto.title : "",
+                description = listDto.description!=null ? listDto.description : "",
+                color = listDto.color!=null ? listDto.color : "",
+                image = listDto.image!=null ? listDto.image : "",
             };
 
-            _context.TodoLists.Add(list);
+            await _context.TodoLists.AddAsync(list);
             await _context.SaveChangesAsync();
 
-            return new TodoListDto
+            return Ok(list.Id);
+            /*new TodoListDto
             {
                 url = list.url,
-                tasks = list.tasks,
+                items = list.tasks,
                 title = list.title,
                 description = list.description,
                 color = list.color,
                 image = list.image
-            };
+            };*/
         }
          
         /*

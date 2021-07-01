@@ -6,9 +6,9 @@ namespace API.DTOs
 {
     public class TodoListDto
     {
-        public int Id{ get; set; }
+        public int id{ get; set; }
         public string url { get; set; }
-        public ICollection<TaskItem> tasks{ get; set; }
+        public ICollection<TaskItem> items{ get; set; }
         public string title { get; set; }
         public string description{ get; set; }
         public string color { get; set; }
