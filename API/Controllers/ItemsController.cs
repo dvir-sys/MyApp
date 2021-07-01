@@ -32,6 +32,18 @@ namespace API.Controllers
             items.ForEach(item => itemDtos.Add(new ItemDto { Caption = item.Caption }));
             return itemDtos;
         }
+
+        //[Route("/add-item/")]
+        [HttpGet("active-items-count")]
+        public async Task<ActionResult<int>> GetActiveItemsCount(){
+            return await _context.TaskItems.Where(item => (!(item.IsCompleted))).CountAsync();
+        }
+
+        //[Route("/add-item/")]
+        [HttpGet("count")]
+        public async Task<ActionResult<int>> GetAllItemsCount(){
+            return await _context.TaskItems.CountAsync();
+        }
         
         [Route("/add-item/")]
         [HttpPost()]

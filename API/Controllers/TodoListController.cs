@@ -28,6 +28,11 @@ namespace API.Controllers
             return await _context.TodoLists.ToListAsync();
         }
 
+        [HttpGet("count")]
+        public async Task<ActionResult<int>> GetListsCount(){
+            return await _context.TodoLists.CountAsync();
+        }
+
         //[Route("/:id")]
         [HttpGet("{id}")]
          public async Task<ActionResult<TodoList>> GetListById(int id){
@@ -40,7 +45,6 @@ namespace API.Controllers
         [HttpPut]
         public async Task<ActionResult<int>> EditListById(/*int id,*/ TodoListDto listDto){
             int id = listDto.id;
-            Console.WriteLine("id!!!" + id);
             if (id == -1){
                 return await CreateNewList(listDto);
             }else{
