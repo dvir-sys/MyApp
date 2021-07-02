@@ -1,9 +1,9 @@
 JB project definition:
 ===============
 
-TaskItem:
+Task / Item:
 - Id
--caption
+- caption
 - listId
 - isCompleted
 
