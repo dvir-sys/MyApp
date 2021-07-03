@@ -29,32 +29,50 @@ namespace API.Controllers
         {
             List<TaskItem> items = await _context.TaskItems.Where(item => (!(item.IsCompleted))).ToListAsync();
             List<ItemDto> itemDtos = new List<ItemDto>();
-            items.ForEach(item => itemDtos.Add(new ItemDto { Caption = item.Caption }));
+            items.ForEach(item => itemDtos.Add(new ItemDto {Id = item.Id, Caption = item.Caption }));
             return itemDtos;
         }
 
-        //[Route("/add-item/")]
+        //[Route("/active-items-count/")]
         [HttpGet("active-items-count")]
         public async Task<ActionResult<int>> GetActiveItemsCount(){
             return await _context.TaskItems.Where(item => (!(item.IsCompleted))).CountAsync();
         }
 
-        //[Route("/add-item/")]
+        //[Route("/count/")]
         [HttpGet("count")]
         public async Task<ActionResult<int>> GetAllItemsCount(){
             return await _context.TaskItems.CountAsync();
         }
+
+        //[Route("/from-list/:id/")]
+        [HttpGet("from-list/{id}")]
+        public async Task<ActionResult<IEnumerable<ListItemDto>>> GetItemsByListId(int id){
+            /*var items = _context.TaskItems.AsQueryable();
+            items = items.Where(item => item.ListId.Equals(listId));
+            return await items.Select(item => )*/
+            
+            return await _context.TaskItems.Where(item => (item.ListId.Equals(id)))
+                .Select(item => new ListItemDto{
+                    Id = item.Id,
+                    Caption = item.Caption,
+                    ListId = item.ListId,
+                    IsCompleted = item.IsCompleted
+                }).ToListAsync();
+        }
         
-        [Route("/add-item/")]
-        [HttpPost()]
+        //[Route("")]
+        [HttpPost("add/")]
         //[HttpPost("add-item")]
         public async Task<ActionResult<ItemDto>> CreateNewItem(NewItemDto itemDto)
         {
+            //Console.WriteLine(itemDto.ToString());
             var item = new TaskItem
             {
                 Caption = itemDto.Caption,
                 ListId = itemDto.ListId,
-                IsCompleted = false
+                IsCompleted = false/*,
+                TodoList = itemDto.TodoList*/
             };
 
             _context.TaskItems.Add(item);
@@ -62,14 +80,15 @@ namespace API.Controllers
 
             return new ItemDto
             {
+                Id = item.Id,
                 Caption = itemDto.Caption
             };
             //return NoContent();
         }
 
         
-        [Route("/edit-item/")]
-        [HttpPut()]
+        //[Route("/edit-item/")]
+        [HttpPut("complete/")]
         //[HttpPut("edit-item")]
         public async Task<ActionResult> EditItem(EditItemDto itemDto)
         {
